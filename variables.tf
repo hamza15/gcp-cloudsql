@@ -24,9 +24,34 @@ variable "region" {
   default     = "northamerica-northeast2"
 }
 
+variable "network_name" {
+  description = "Name for private network"
+  default     = "private-network"
+}
+
+variable "network_ip" {
+  description = "Type of network ip"
+  default     = "private-ip-address"
+}
+
+variable "purpose" {
+  description = "Purpose for private network"
+  default     = "VPC_PEERING"
+}
+
+variable "master_db_name" {
+  description = "Name of Master database instance"
+  default     = "postgres-db"
+}
+
+variable "address_type" {
+  description = "Type of address"
+  default     = "INTERNAL"
+}
+
 variable "database_version" {
   description = "The version of of the database. For example, `MYSQL_5_6` or `POSTGRES_9_6`."
-  default     = "POSTGRES_15_2"
+  default     = "POSTGRES_15"
 }
 
 variable "master_instance_name" {
@@ -106,7 +131,11 @@ variable "database_flags" {
 
 variable "backup_configuration" {
   description = "The backup_configuration settings subblock for the database setings"
-  default     = {}
+  default     = {
+    point_in_time_recovery_enabled = true
+    enabled                        = true
+    start_time                     = "05:00"
+  }
 }
 
 variable "ip_configuration" {
@@ -121,7 +150,11 @@ variable "location_preference" {
 
 variable "maintenance_window" {
   description = "The maintenance_window settings subblock"
-  default     = {}
+  default     = {
+    day          = 6
+    hour         = 20
+    update_track = "stable"
+  }
 }
 
 variable "availability_type" {
@@ -129,5 +162,23 @@ variable "availability_type" {
   default     = "REGIONAL"
 }
 
+variable "replica_tier" {
+  description = "The tier for replica database"
+  default     = "db-f1-micro"
+}
 
+variable "replica_availability_type" {
+  description = "This specifies whether a PostgreSQL replica instance should be set up for high availability (REGIONAL) or single zone (ZONAL)."
+  default     = "ZONAL"
+}
+
+variable "replica_disk_size" {
+  description = "The disk size for replica database"
+  default     = "10"
+}
+
+variable "regional_replica_region" {
+  description = "The region for replica database instance"
+  default     = "northamerica-northeast1"
+}
 
