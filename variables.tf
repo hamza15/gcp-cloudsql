@@ -1,19 +1,3 @@
-/*
- * Copyright 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 variable "project" {
   description = "The project to deploy to, if not set the default provider project is used."
   default     = "famous-modem-399417"
@@ -61,7 +45,7 @@ variable "master_instance_name" {
 
 variable "tier" {
   description = "The machine tier (First Generation) or type (Second Generation). See this page for supported tiers and pricing: https://cloud.google.com/sql/pricing"
-  default     = "db-f1-micro"
+  default     = "db-custom-4-8192"
 }
 
 variable "db_name" {
@@ -134,7 +118,11 @@ variable "backup_configuration" {
   default     = {
     point_in_time_recovery_enabled = true
     enabled                        = true
-    start_time                     = "05:00"
+    start_time                     = "01:00"
+    binary_log_enabled             = true
+    backup_location                = "northamerica-northeast2"
+    log_retention_days             = 7
+    retained_backups               = 9
   }
 }
 
@@ -154,6 +142,16 @@ variable "maintenance_window" {
     day          = 6
     hour         = 20
     update_track = "stable"
+  }
+}
+
+variable "insights_config" {
+  description = "The insights config settings sublock"
+  default     = {
+    query_insights_enabled  = true
+    query_string_length     = 1024
+    record_application_tags = true
+    record_client_address   = true
   }
 }
 
@@ -181,4 +179,3 @@ variable "regional_replica_region" {
   description = "The region for replica database instance"
   default     = "northamerica-northeast1"
 }
-
